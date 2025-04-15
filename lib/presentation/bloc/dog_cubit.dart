@@ -10,9 +10,15 @@ class DogCubit extends Cubit<DogState> {
   }
 
   Future<void> fetchDogs() async {
-    final dogs = await getDogsUseCase();
-    emit(DogLoaded(dogs));
+    emit(DogLoading());
+    try {
+      final dogs = await getDogsUseCase();
+      emit(DogLoaded(dogs));
+    } catch (e) {
+      emit(DogError("Не удалось загрузить данные: $e"));
+    }
   }
+
 
 
 
